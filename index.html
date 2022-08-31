@@ -1,0 +1,124 @@
+<html>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+  <body>
+    <div class="container">
+      <div>
+        <button id="decreaser" class="button">PREVIOUS STEP</button>
+      </div>
+      <div>
+        <p id="result">1</p>
+      </div>
+      <div>
+        <button id="increaser" class="button">NEXT STEP</button>
+      </div>
+    </div>
+    <div class="container">
+      <div>
+        <div>
+          <p class="text">
+            All links with their starting point, target point and weight of a
+            link:
+          </p>
+          <div id="links" class="links">
+            <p id="value"></p>
+          </div>
+        </div>
+
+        <div>
+          <p class="text">Shortest path calculated with Djikstras algorithm:</p>
+          <div id="links" class="links shortestPathLinks">
+            <p id="finalValue"></p>
+          </div>
+        </div>
+      </div>
+
+      <svg id="viz"></svg>
+    </div>
+    <div class="container container-bottom">
+      <div class="container-new-graph">
+        <div class="container">
+          Please enter links and weight of the links to create new graph:
+        </div>
+        <form class="pure-form">
+          <div class="container-form">
+            <div>
+              <div>
+                <p>Name of source node:</p>
+                <input
+                  id="firstNode"
+                  type="text"
+                  required
+                  placeholder="Enter node name"
+                  required
+                />
+              </div>
+              <div>
+                <p>Name of targeted node:</p>
+                <input
+                  id="secondNode"
+                  required
+                  type="text"
+                  placeholder="Enter second node name"
+                />
+              </div>
+              <div>
+                <p>Weight of link between nodes:</p>
+                <input
+                  id="linkValue"
+                  min="1"
+                  max="50"
+                  required
+                  type="number"
+                  placeholder="Enter weight of link"
+                />
+              </div>
+            </div>
+            <button class="button color-two">submit new link</button>
+          </div>
+        </form>
+        <div class="container">
+          <button id="draw" class="button color-one">draw new graph</button>
+        </div>
+      </div>
+
+      <div class="text">
+        <p>Between which two point do you want to find shortest path?</p>
+        <form>
+          <div class="container container-points-main">
+            <div class="container-points">
+              <p>starting point:</p>
+              <input
+                id="firstNode"
+                type="text"
+                required
+                placeholder="example: 1"
+              />
+            </div>
+            <div class="container-points">
+              <p>end point:</p>
+              <input
+                id="firstNode"
+                type="text"
+                required
+                placeholder="example: 2"
+              />
+            </div>
+          </div>
+          <div>
+            <br />
+            <button class="button color-one">submit points</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="./D3.js" type="module"></script>
+</html>
