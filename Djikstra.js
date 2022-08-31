@@ -1,8 +1,4 @@
-import {
-  exampleGraph,
-  startPoint,
-  endPoint
-} from './exampleData.js';
+import { exampleGraph, startPoint, endPoint } from './exampleData.js';
 
 const shortestDistanceNode = (distances, visited) => {
   let shortest = null;
@@ -18,6 +14,8 @@ const shortestDistanceNode = (distances, visited) => {
 };
 
 export const findShortestPath = (graph, startNode, endNode) => {
+  const pathFindingLinks = [];
+
   // establish object for recording distances from the start node
   let distances = {};
   distances[endNode] = 'Infinity';
@@ -44,7 +42,6 @@ export const findShortestPath = (graph, startNode, endNode) => {
     for (let child in children) {
       // make sure each child node is not the start node
       if (String(child) === String(startNode)) {
-        // console.log("don't return to the start node!");
         continue;
       } else {
         // console.log('startNode: ' + startNode);
@@ -57,6 +54,13 @@ export const findShortestPath = (graph, startNode, endNode) => {
         // save the distance from the start node to the child node
 
         // console.log(distance, children[child]);
+        const childLinkValue = children[child];
+        pathFindingLinks.push({
+          source: node,
+          target: child,
+          value: childLinkValue,
+          color: 'green',
+        });
         let newdistance = distance + children[child];
 
         // console.log('new distance: ' + newdistance);
@@ -96,7 +100,7 @@ export const findShortestPath = (graph, startNode, endNode) => {
     path: shortestPath,
   };
 
-  return results;
+  return { results, pathFindingLinks };
 };
 
 // set default graph for first example of algorithm
@@ -171,5 +175,50 @@ export function createGraphsFromResult(result, graph) {
   return shortestPathGraphs;
 }
 
-const result = findShortestPath(graph, startPoint, endPoint);
-export const firsExampleGraph = createGraphsFromResult(result, graph);
+export function init(graph) {
+  const { nodes, links } = constructData(graph);
+  const pathFindingLinksArray = [];
+
+  for (let i = 0; i < pathFindingLinks.length; i++) {
+    pathFindingLinksArray.push({
+      nodes,
+      links: [...links, pathFindingLinks[i]],
+    });
+  }
+
+  const createdGraphArray = createGraphsFromResult(results, graph);
+  const correctPathLength = createdGraphArray.length;
+
+  createdGraphArray.unshift(...pathFindingLinksArray);
+
+  const userGraph = {
+    ...createdGraphArray,
+  };
+
+  return { userGraph, correctPathLength }
+}
+
+const { results, pathFindingLinks } = findShortestPath(
+  graph,
+  startPoint,
+  endPoint
+);
+
+const { nodes, links } = constructData(graph);
+const pathFindingLinksArray = [];
+
+for (let i = 0; i < pathFindingLinks.length; i++) {
+  pathFindingLinksArray.push({
+    nodes,
+    links: [...links, pathFindingLinks[i]],
+  });
+}
+
+const createdGraphArray = createGraphsFromResult(results, graph);
+export const correctPathLength = createdGraphArray.length;
+
+createdGraphArray.unshift(...pathFindingLinksArray);
+
+export const firsExampleGraph = {
+  ...createdGraphArray,
+};

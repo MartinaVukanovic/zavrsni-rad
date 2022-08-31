@@ -2,11 +2,24 @@ import {
   firsExampleGraph,
   findShortestPath,
   createGraphsFromResult,
+  correctPathLength,
 } from './Djikstra.js';
 
 var firstNode = document.getElementById('firstNode');
 var secondNode = document.getElementById('secondNode');
 var linkValue = document.getElementById('linkValue');
+var startPoint = document.getElementById('startPoint');
+var endPoint = document.getElementById('endPoint');
+
+document
+  .querySelector('form.points-form')
+  .addEventListener('submit', function (e) {
+    e.preventDefault();
+    localStorage.removeItem('startPoint');
+    localStorage.setItem('startPoint', startPoint.value);
+    localStorage.removeItem('endPoint');
+    localStorage.setItem('endPoint', endPoint.value);
+  });
 
 const listOfUserValues = [];
 const newUserGraph = {};
@@ -40,7 +53,8 @@ document.getElementById('draw').addEventListener('click', function (e) {
       ] = parseInt(listOfUserValues[i].linksValue);
     }
   }
-  const result = findShortestPath(newUserGraph, '1', '3');
+
+  const result = findShortestPath(newUserGraph, '1', '3').results;
   const userGraph = createGraphsFromResult(result, newUserGraph);
   localStorage.setItem('userGraph', JSON.stringify(userGraph));
   updateData(0);
@@ -64,7 +78,7 @@ function steps() {
     updateData(res.textContent);
     res.textContent++;
 
-    if (res.textContent > graphs.length - 1) {
+    if (res.textContent > graphs[0].links.length) {
       increaser.disabled = true;
     }
     if (res.textContent > 1) {
@@ -79,7 +93,7 @@ function steps() {
     if (res.textContent < 2) {
       decreaser.disabled = true;
     }
-    if (res.textContent <= graphs.length - 1) {
+    if (res.textContent <= graphs[0].links.length) {
       increaser.disabled = false;
     }
   });
@@ -96,7 +110,7 @@ const shownFinishedLinksData = [];
 let valueParagraph = '';
 let finalValueParagraph = '';
 
-for (let i = 0; i < graphs[0].links.length - 1; i++) {
+for (let i = 0; i < graphs[0].links.length; i++) {
   shownLinksData.push({
     data: ` source -  ${graphs[0].links[i].source}
     <span class="tab"></span> target - ${graphs[0].links[i].target} 
@@ -106,14 +120,18 @@ for (let i = 0; i < graphs[0].links.length - 1; i++) {
 }
 
 value.innerHTML = valueParagraph;
-
-for (let i = 0; i < graphs.length; i++) {
-  const lastLinkIndex = graphs[0].links.length - 1;
+for (
+  let i = graphs[0].links.length;
+  i > graphs[0].links.length - correctPathLength;
+  i--
+) {
   shownFinishedLinksData.push({
-    data: ` source -  ${graphs[i].links[lastLinkIndex].source}
-    <span class="tab"></span> target - ${graphs[i].links[lastLinkIndex].target} 
-    <span class="tab"></span> value - ${graphs[i].links[lastLinkIndex].value} `,
+    data: ` source -  ${graphs[i].links[graphs[0].links.length-1].source}
+    <span class="tab"></span> target - ${graphs[i].links[graphs[0].links.length-1].target} 
+    <span class="tab"></span> value - ${graphs[i].links[graphs[0].links.length-1].value} `,
   });
+}
+for (let i = 0; i < shownFinishedLinksData.length; i++) {
   finalValueParagraph += shownFinishedLinksData[i].data;
 }
 
