@@ -1,7 +1,6 @@
 import {
   firsExampleGraph,
-  findShortestPath,
-  createGraphsFromResult,
+  getUserGraph,
   correctPathLength,
 } from './Djikstra.js';
 
@@ -54,9 +53,21 @@ document.getElementById('draw').addEventListener('click', function (e) {
     }
   }
 
-  const result = findShortestPath(newUserGraph, '1', '3').results;
-  const userGraph = createGraphsFromResult(result, newUserGraph);
-  localStorage.setItem('userGraph', JSON.stringify(userGraph));
+  let startPoint,
+    endPoint = '';
+  if (localStorage.getItem('startPoint'))
+    startPoint = localStorage.getItem('startPoint');
+
+  if (localStorage.getItem('endPoint'))
+    endPoint = localStorage.getItem('endPoint');
+
+  const { firsExampleGraph, correctPathLength } = getUserGraph(
+    newUserGraph,
+    startPoint,
+    endPoint
+  );
+  localStorage.setItem('correctPathLength', correctPathLength);
+  localStorage.setItem('userGraph', JSON.stringify(firsExampleGraph));
   updateData(0);
 });
 
@@ -65,20 +76,33 @@ graphs = firsExampleGraph;
 
 const increaser = document.querySelector('#increaser');
 const decreaser = document.querySelector('#decreaser');
+const auto = document.querySelector('#auto');
 const res = document.querySelector('#result');
 
 if (parseInt(res.textContent) === 1) decreaser.disabled = true;
 
-function steps() {
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function steps() {
   const userGraph = JSON.parse(localStorage.getItem('userGraph'));
   if (userGraph) {
     graphs = userGraph;
   }
+
+  auto.addEventListener('click', async () => {
+    for (let i = 0; i < Object.keys(graphs).length; i++) {
+      updateData(i);
+      await sleep(750);
+    }
+  });
+
   increaser.addEventListener('click', () => {
     updateData(res.textContent);
     res.textContent++;
 
-    if (res.textContent > graphs[0].links.length) {
+    if (res.textContent > Object.keys(graphs).length - 1) {
       increaser.disabled = true;
     }
     if (res.textContent > 1) {
@@ -93,7 +117,7 @@ function steps() {
     if (res.textContent < 2) {
       decreaser.disabled = true;
     }
-    if (res.textContent <= graphs[0].links.length) {
+    if (res.textContent <= Object.keys(graphs).length - 1) {
       increaser.disabled = false;
     }
   });
@@ -120,19 +144,50 @@ for (let i = 0; i < graphs[0].links.length; i++) {
 }
 
 value.innerHTML = valueParagraph;
-for (
+
+if (localStorage.getItem('correctPathLength') && Object.keys(graphs).length !== 16) {
+  const correctPathLength = localStorage.getItem('correctPathLength');
+  for (
+    let i = Object.keys(graphs).length;
+    i > Object.keys(graphs).length - correctPathLength;
+    i--
+  ) {
+    shownFinishedLinksData.push({
+      data: ` source -  ${
+        graphs[i - 1].links[graphs[0].links.length - 1].source
+      }
+      <span class="tab"></span> target - ${
+        graphs[i - 1].links[graphs[0].links.length - 1].target
+      } 
+      <span class="tab"></span> value - ${
+        graphs[i - 1].links[graphs[0].links.length - 1].value
+      } `,
+    });
+  }
+  for (let i = 0; i < shownFinishedLinksData.length; i++) {
+    finalValueParagraph += shownFinishedLinksData[i].data;
+  }
+
+  finalValue.innerHTML = finalValueParagraph;
+} else {
+  for (
   let i = graphs[0].links.length;
   i > graphs[0].links.length - correctPathLength;
   i--
 ) {
   shownFinishedLinksData.push({
-    data: ` source -  ${graphs[i].links[graphs[0].links.length-1].source}
-    <span class="tab"></span> target - ${graphs[i].links[graphs[0].links.length-1].target} 
-    <span class="tab"></span> value - ${graphs[i].links[graphs[0].links.length-1].value} `,
-  });
-}
-for (let i = 0; i < shownFinishedLinksData.length; i++) {
-  finalValueParagraph += shownFinishedLinksData[i].data;
+      data: ` source -  ${graphs[i].links[graphs[0].links.length - 1].source}
+    <span class="tab"></span> target - ${
+      graphs[i].links[graphs[0].links.length - 1].target
+    } 
+    <span class="tab"></span> value - ${
+      graphs[i].links[graphs[0].links.length - 1].value
+    } `,
+    });
+  }
+  for (let i = 0; i < shownFinishedLinksData.length; i++) {
+    finalValueParagraph += shownFinishedLinksData[i].data;
+  }
 }
 
 finalValue.innerHTML = finalValueParagraph;

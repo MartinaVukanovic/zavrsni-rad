@@ -175,7 +175,13 @@ export function createGraphsFromResult(result, graph) {
   return shortestPathGraphs;
 }
 
-export function init(graph) {
+export function getUserGraph(graph, startPoint, endPoint) {
+  const { results, pathFindingLinks } = findShortestPath(
+    graph,
+    startPoint,
+    endPoint
+  );
+
   const { nodes, links } = constructData(graph);
   const pathFindingLinksArray = [];
 
@@ -185,17 +191,16 @@ export function init(graph) {
       links: [...links, pathFindingLinks[i]],
     });
   }
-
   const createdGraphArray = createGraphsFromResult(results, graph);
   const correctPathLength = createdGraphArray.length;
 
   createdGraphArray.unshift(...pathFindingLinksArray);
 
-  const userGraph = {
+  const firsExampleGraph = {
     ...createdGraphArray,
   };
 
-  return { userGraph, correctPathLength }
+  return { correctPathLength, firsExampleGraph };
 }
 
 const { results, pathFindingLinks } = findShortestPath(

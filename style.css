@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: center;
   gap: 80px;
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
 .container-form {
@@ -78,7 +78,7 @@ input {
 }
 
 .container-points {
-  margin-top: -40px;
+  margin-top: -20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,4 +91,19 @@ input {
 
 .color-two {
   background-color: #f2eaf2;
+}
+
+.hr {
+  border: 0px;
+  width: 150px;
+  height: 10px;
+  border-radius: 5px;
+}
+
+.hr-red {
+  background-color: red;
+}
+
+.hr-green {
+  background-color: green;
 }
