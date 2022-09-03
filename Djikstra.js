@@ -224,6 +224,25 @@ export const correctPathLength = createdGraphArray.length;
 
 createdGraphArray.unshift(...pathFindingLinksArray);
 
-export const firsExampleGraph = {
+const firsExampleGraph = {
   ...createdGraphArray,
 };
+
+const activeNodes = [];
+
+for (var item in firsExampleGraph) {
+  for (let i = 0; i < firsExampleGraph[item].links.length; i++) {
+    const link = firsExampleGraph[item].links[i];
+    if (link.color === 'green' || link.color === 'red') {
+      for (let i = 0; i < firsExampleGraph[item].nodes.length; i++) {
+        if (firsExampleGraph[item].nodes[i].id == link.source) {
+          activeNodes.push({ id: link.source });
+        }
+      }
+    }
+  }
+}
+
+export const active = activeNodes
+
+export const firstExampleGraph = firsExampleGraph;

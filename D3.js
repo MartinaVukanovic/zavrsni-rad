@@ -1,8 +1,10 @@
 import {
-  firsExampleGraph,
+  firstExampleGraph,
   getUserGraph,
   correctPathLength,
 } from './Djikstra.js';
+
+import { correctSteps, allSteps } from './steps.js';
 
 var firstNode = document.getElementById('firstNode');
 var secondNode = document.getElementById('secondNode');
@@ -61,18 +63,18 @@ document.getElementById('draw').addEventListener('click', function (e) {
   if (localStorage.getItem('endPoint'))
     endPoint = localStorage.getItem('endPoint');
 
-  const { firsExampleGraph, correctPathLength } = getUserGraph(
+  const { firstExampleGraph, correctPathLength } = getUserGraph(
     newUserGraph,
     startPoint,
     endPoint
   );
   localStorage.setItem('correctPathLength', correctPathLength);
-  localStorage.setItem('userGraph', JSON.stringify(firsExampleGraph));
+  localStorage.setItem('userGraph', JSON.stringify(firstExampleGraph));
   updateData(0);
 });
 
 let graphs = {};
-graphs = firsExampleGraph;
+graphs = firstExampleGraph;
 
 const increaser = document.querySelector('#increaser');
 const decreaser = document.querySelector('#decreaser');
@@ -92,14 +94,17 @@ async function steps() {
   }
 
   auto.addEventListener('click', async () => {
+    const stepDuration = 1000;
+    showSteps(stepDuration);
     for (let i = 0; i < Object.keys(graphs).length; i++) {
       updateData(i);
-      await sleep(750);
+      await sleep(stepDuration);
     }
   });
 
   increaser.addEventListener('click', () => {
     updateData(res.textContent);
+    showStepsManual(res.textContent);
     res.textContent++;
 
     if (res.textContent > Object.keys(graphs).length - 1) {
@@ -112,6 +117,7 @@ async function steps() {
 
   decreaser.addEventListener('click', () => {
     updateData(res.textContent - 2);
+    showStepsManual(res.textContent - 2, true);
     res.textContent--;
 
     if (res.textContent < 2) {
@@ -125,72 +131,83 @@ async function steps() {
 
 steps();
 
-// write links and their source, target and value, beside graph in HTML
-const value = document.getElementById('value');
-const finalValue = document.getElementById('finalValue');
-const shownLinksData = [];
-const shownFinishedLinksData = [];
+async function showSteps(a) {
+  const stepsValue = document.getElementById('stepsValue');
+  stepsValue.textContent = '';
 
-let valueParagraph = '';
-let finalValueParagraph = '';
+  let stepsData = [];
+  let stepsParagraph = '';
 
-for (let i = 0; i < graphs[0].links.length; i++) {
-  shownLinksData.push({
-    data: ` source -  ${graphs[0].links[i].source}
-    <span class="tab"></span> target - ${graphs[0].links[i].target} 
-    <span class="tab"></span> value - ${graphs[0].links[i].value} `,
-  });
-  valueParagraph += shownLinksData[i].data;
-}
-
-value.innerHTML = valueParagraph;
-
-if (localStorage.getItem('correctPathLength') && Object.keys(graphs).length !== 16) {
-  const correctPathLength = localStorage.getItem('correctPathLength');
-  for (
-    let i = Object.keys(graphs).length;
-    i > Object.keys(graphs).length - correctPathLength;
-    i--
-  ) {
-    shownFinishedLinksData.push({
-      data: ` source -  ${
-        graphs[i - 1].links[graphs[0].links.length - 1].source
-      }
-      <span class="tab"></span> target - ${
-        graphs[i - 1].links[graphs[0].links.length - 1].target
-      } 
-      <span class="tab"></span> value - ${
-        graphs[i - 1].links[graphs[0].links.length - 1].value
-      } `,
+  for (let i = 0; i < graphs[i].links.length - correctPathLength + 1; i++) {
+    let source, target;
+    if (graphs[i].links[graphs[i].links.length - 1].source.id) {
+      source = graphs[i].links[graphs[i].links.length - 1].source.id;
+    } else {
+      source = graphs[i].links[graphs[i].links.length - 1].source;
+    }
+    if (graphs[i].links[graphs[i].links.length - 1].target.id) {
+      target = graphs[i].links[graphs[i].links.length - 1].target.id;
+    } else {
+      target = graphs[i].links[graphs[i].links.length - 1].target;
+    }
+    stepsData.push({
+      data: `<p class="animated"> source -  ${source}
+  <span class="tab"></span> target - ${target} 
+  <span class="tab"></span> value - ${
+    graphs[i].links[graphs[i].links.length - 1].value
+  } </p>`,
     });
   }
-  for (let i = 0; i < shownFinishedLinksData.length; i++) {
-    finalValueParagraph += shownFinishedLinksData[i].data;
-  }
-
-  finalValue.innerHTML = finalValueParagraph;
-} else {
-  for (
-  let i = graphs[0].links.length;
-  i > graphs[0].links.length - correctPathLength;
-  i--
-) {
-  shownFinishedLinksData.push({
-      data: ` source -  ${graphs[i].links[graphs[0].links.length - 1].source}
-    <span class="tab"></span> target - ${
-      graphs[i].links[graphs[0].links.length - 1].target
-    } 
-    <span class="tab"></span> value - ${
-      graphs[i].links[graphs[0].links.length - 1].value
-    } `,
-    });
-  }
-  for (let i = 0; i < shownFinishedLinksData.length; i++) {
-    finalValueParagraph += shownFinishedLinksData[i].data;
+  for (let i = 0; i < stepsData.length; i++) {
+    console.log(stepsData[i]);
+    stepsParagraph += stepsData[i].data;
+    stepsValue.innerHTML = stepsParagraph;
+    await sleep(a);
   }
 }
 
-finalValue.innerHTML = finalValueParagraph;
+async function showStepsManual(n, clear) {
+  const stepsValue = document.getElementById('stepsValue');
+  stepsValue.textContent = '';
+
+  let stepsData = [];
+  let stepsParagraph = '';
+
+  for (let i = 0; i < graphs[n].links.length - correctPathLength + 1; i++) {
+    let source, target;
+    if (graphs[i].links[graphs[n].links.length - 1].source.id) {
+      source = graphs[i].links[graphs[n].links.length - 1].source.id;
+    } else {
+      source = graphs[i].links[graphs[n].links.length - 1].source;
+    }
+    if (graphs[i].links[graphs[n].links.length - 1].target.id) {
+      target = graphs[i].links[graphs[n].links.length - 1].target.id;
+    } else {
+      target = graphs[i].links[graphs[n].links.length - 1].target;
+    }
+    stepsData.push({
+      data: `<p class="animated"> source -  ${source}
+  <span class="tab"></span> target - ${target} 
+  <span class="tab"></span> value - ${
+    graphs[i].links[graphs[n].links.length - 1].value
+  } </p>`,
+    });
+  }
+  for (let i = 0; i < n; i++) {
+    if (clear) {
+      stepsParagraph += stepsData[i].data;
+    } else {
+      stepsParagraph += stepsData[i + 1].data;
+    }
+
+    stepsValue.innerHTML = stepsParagraph;
+  }
+}
+
+// showSteps(0);
+
+allSteps(graphs);
+correctSteps(graphs, correctPathLength);
 
 var width = 600;
 var height = 400;
@@ -294,6 +311,14 @@ function updateData(i) {
     .attr('r', 10)
     .attr('fill', function (d) {
       return color(d.group);
+    })
+    .attr('stroke', function (d) {
+      if (d) {
+        return 'white';
+      }
+    })
+    .attr('stroke-width', function (d) {
+      if (d.active) return 4;
     });
 
   node.on('mouseover', focus).on('mouseout', unfocus);

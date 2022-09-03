@@ -107,3 +107,7 @@ input {
 .hr-green {
   background-color: green;
 }
+.animated {
+  margin: 0px;
+  padding: 0px;
+}

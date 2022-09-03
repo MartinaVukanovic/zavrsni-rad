@@ -18,26 +18,36 @@
         <button id="increaser" class="button">NEXT STEP</button>
       </div>
     </div>
-   
-  <div class="container" style="text-align: center;">
-    <div>
-      <p>
-        path finding through algorithm:
-      </p>
-      <hr class="hr hr-green">
-    </div>
-    <div>
-      <p>
-        shortest path:
-      </p>
-      <hr class="hr hr-red">
-    </div>
-  </div>
-  <div class="container">
-    <button id="auto" class="button">AUTOPLAY ALGORITHM</button>
-</div>
     <div class="container">
+      <button id="auto" class="button">AUTOPLAY ALGORITHM</button>
+    </div>
+    <div class="container">
+      <div style="width: 350px; height: 500px; color: green">
+        <p class="text" style="color: black">
+          Steps of Dijkstra algorithm path finding on example graph
+        </p>
+        <div id="stepsDiv">
+          <p id="stepsValue"></p>
+        </div>
+      </div>
       <div>
+        <div>
+          <div class="container" style="text-align: center">
+            <div>
+              <p>path finding through algorithm:</p>
+              <hr class="hr hr-green" />
+            </div>
+            <div>
+              <p>shortest path:</p>
+              <hr class="hr hr-red" />
+            </div>
+          </div>
+        </div>
+      <svg id="viz"></svg>
+      </div>
+    </div>
+    <div>
+      <div class="container">
         <div>
           <p class="text">
             All links with their starting point, target point and weight of a
@@ -47,7 +57,6 @@
             <p id="value"></p>
           </div>
         </div>
-
         <div>
           <p class="text">Shortest path calculated with Djikstras algorithm:</p>
           <div id="links" class="links shortestPathLinks">
@@ -55,8 +64,6 @@
           </div>
         </div>
       </div>
-
-      <svg id="viz"></svg>
     </div>
     <div class="container container-bottom">
       <div class="container-new-graph">
@@ -104,7 +111,6 @@
           <button id="draw" class="button color-one">draw new graph</button>
         </div>
       </div>
-
       <div class="text">
         <p>Between which two point do you want to find shortest path?</p>
         <form class="points-form">
