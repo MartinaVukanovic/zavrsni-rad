@@ -3,8 +3,8 @@ import {
   getUserGraph,
   correctPathLength,
 } from './Djikstra.js';
-
-import { correctSteps, allSteps } from './steps.js';
+import { sleep } from './utilityService.js';
+import { correctSteps, allSteps, showSteps, showStepsManual } from './steps.js';
 
 var firstNode = document.getElementById('firstNode');
 var secondNode = document.getElementById('secondNode');
@@ -83,10 +83,6 @@ const res = document.querySelector('#result');
 
 if (parseInt(res.textContent) === 1) decreaser.disabled = true;
 
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 async function steps() {
   const userGraph = JSON.parse(localStorage.getItem('userGraph'));
   if (userGraph) {
@@ -95,7 +91,7 @@ async function steps() {
 
   auto.addEventListener('click', async () => {
     const stepDuration = 1000;
-    showSteps(stepDuration);
+    showSteps(stepDuration, graphs, correctPathLength);
     for (let i = 0; i < Object.keys(graphs).length; i++) {
       updateData(i);
       await sleep(stepDuration);
@@ -104,7 +100,7 @@ async function steps() {
 
   increaser.addEventListener('click', () => {
     updateData(res.textContent);
-    showStepsManual(res.textContent);
+    showStepsManual(res.textContent, false, graphs, correctPathLength);
     res.textContent++;
 
     if (res.textContent > Object.keys(graphs).length - 1) {
@@ -117,7 +113,7 @@ async function steps() {
 
   decreaser.addEventListener('click', () => {
     updateData(res.textContent - 2);
-    showStepsManual(res.textContent - 2, true);
+    showStepsManual(res.textContent - 2, true, graphs, correctPathLength);
     res.textContent--;
 
     if (res.textContent < 2) {
@@ -130,86 +126,10 @@ async function steps() {
 }
 
 steps();
-
-async function showSteps(a) {
-  const stepsValue = document.getElementById('stepsValue');
-  stepsValue.textContent = '';
-
-  let stepsData = [];
-  let stepsParagraph = '';
-
-  for (let i = 0; i < graphs[i].links.length - correctPathLength + 1; i++) {
-    let source, target;
-    if (graphs[i].links[graphs[i].links.length - 1].source.id) {
-      source = graphs[i].links[graphs[i].links.length - 1].source.id;
-    } else {
-      source = graphs[i].links[graphs[i].links.length - 1].source;
-    }
-    if (graphs[i].links[graphs[i].links.length - 1].target.id) {
-      target = graphs[i].links[graphs[i].links.length - 1].target.id;
-    } else {
-      target = graphs[i].links[graphs[i].links.length - 1].target;
-    }
-    stepsData.push({
-      data: `<p class="animated"> source -  ${source}
-  <span class="tab"></span> target - ${target} 
-  <span class="tab"></span> value - ${
-    graphs[i].links[graphs[i].links.length - 1].value
-  } </p>`,
-    });
-  }
-  for (let i = 0; i < stepsData.length; i++) {
-    console.log(stepsData[i]);
-    stepsParagraph += stepsData[i].data;
-    stepsValue.innerHTML = stepsParagraph;
-    await sleep(a);
-  }
-}
-
-async function showStepsManual(n, clear) {
-  const stepsValue = document.getElementById('stepsValue');
-  stepsValue.textContent = '';
-
-  let stepsData = [];
-  let stepsParagraph = '';
-
-  for (let i = 0; i < graphs[n].links.length - correctPathLength + 1; i++) {
-    let source, target;
-    if (graphs[i].links[graphs[n].links.length - 1].source.id) {
-      source = graphs[i].links[graphs[n].links.length - 1].source.id;
-    } else {
-      source = graphs[i].links[graphs[n].links.length - 1].source;
-    }
-    if (graphs[i].links[graphs[n].links.length - 1].target.id) {
-      target = graphs[i].links[graphs[n].links.length - 1].target.id;
-    } else {
-      target = graphs[i].links[graphs[n].links.length - 1].target;
-    }
-    stepsData.push({
-      data: `<p class="animated"> source -  ${source}
-  <span class="tab"></span> target - ${target} 
-  <span class="tab"></span> value - ${
-    graphs[i].links[graphs[n].links.length - 1].value
-  } </p>`,
-    });
-  }
-  for (let i = 0; i < n; i++) {
-    if (clear) {
-      stepsParagraph += stepsData[i].data;
-    } else {
-      stepsParagraph += stepsData[i + 1].data;
-    }
-
-    stepsValue.innerHTML = stepsParagraph;
-  }
-}
-
-// showSteps(0);
-
 allSteps(graphs);
 correctSteps(graphs, correctPathLength);
 
-var width = 600;
+var width = 550;
 var height = 400;
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 

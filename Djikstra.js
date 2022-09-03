@@ -60,6 +60,7 @@ export const findShortestPath = (graph, startNode, endNode) => {
           target: child,
           value: childLinkValue,
           color: 'green',
+          newLinkValue: distances[child],
         });
         let newdistance = distance + children[child];
 
@@ -243,6 +244,5 @@ for (var item in firsExampleGraph) {
   }
 }
 
-export const active = activeNodes
-
+export const active = activeNodes;
 export const firstExampleGraph = firsExampleGraph;

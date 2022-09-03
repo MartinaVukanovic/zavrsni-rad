@@ -8,23 +8,12 @@
   <link rel="stylesheet" href="style.css" />
   <body>
     <div class="container">
-      <div>
-        <button id="decreaser" class="button">PREVIOUS STEP</button>
-      </div>
-      <div>
-        <p id="result">1</p>
-      </div>
-      <div>
-        <button id="increaser" class="button">NEXT STEP</button>
-      </div>
+      <button id="auto" class="button" style="margin-top: 10px;">AUTOPLAY ALGORITHM</button>
     </div>
     <div class="container">
-      <button id="auto" class="button">AUTOPLAY ALGORITHM</button>
-    </div>
-    <div class="container">
-      <div style="width: 350px; height: 500px; color: green">
+      <div class="steps-container">
         <p class="text" style="color: black">
-          Steps of Dijkstra algorithm path finding on example graph
+          Start autoplay or run algorithm step by step to see it in action!
         </p>
         <div id="stepsDiv">
           <p id="stepsValue"></p>
@@ -43,9 +32,21 @@
             </div>
           </div>
         </div>
-      <svg id="viz"></svg>
+        <svg id="viz"></svg>
       </div>
     </div>
+    <div class="container" >
+      <div>
+        <button id="decreaser" class="button">PREVIOUS STEP</button>
+      </div>
+      <div>
+        <p id="result">1</p>
+      </div>
+      <div>
+        <button id="increaser" class="button">NEXT STEP</button>
+      </div>
+    </div>
+
     <div>
       <div class="container">
         <div>
@@ -54,7 +55,7 @@
             link:
           </p>
           <div id="links" class="links">
-            <p id="value"></p>
+            <table id="value"></table>
           </div>
         </div>
         <div>
@@ -65,8 +66,8 @@
         </div>
       </div>
     </div>
-    <div class="container container-bottom">
-      <div class="container-new-graph">
+    <div class="container" style="display: none">
+      <div>
         <div class="container">
           Please enter links and weight of the links to create new graph:
         </div>
