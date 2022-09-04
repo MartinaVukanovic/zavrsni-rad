@@ -6,7 +6,7 @@ export function correctSteps(graphs, correctPathLength) {
   let finalValueParagraph = '';
 
   if (
-    localStorage.getItem('correctPathLength') &&
+    correctPathLength &&
     Object.keys(graphs).length !== 16
   ) {
     const correctPathLength = localStorage.getItem('correctPathLength');
@@ -82,7 +82,8 @@ export async function showStepsManual(n, clear, graphs, correctPathLength) {
   let stepsData = [];
   let stepsParagraph = '';
 
-  for (let i = 0; i < graphs[n].links.length - correctPathLength + 1; i++) {
+  for (let i = 0; i < graphs[n].links.length - correctPathLength - 1; i++) {
+    // # TODO fix for user added links
     let source, target;
     source = graphs[i].links[graphs[n].links.length - 1].source;
     target = graphs[i].links[graphs[n].links.length - 1].target;
@@ -130,7 +131,7 @@ export async function showSteps(a, graphs, correctPathLength) {
   let stepsData = [];
   let stepsParagraph = '';
 
-  for (let i = 0; i < graphs[i].links.length - correctPathLength + 1; i++) {
+  for (let i = 0; i < graphs[i].links.length - correctPathLength; i++) {
     let source, target;
     if (graphs[i].links[graphs[i].links.length - 1].source.id) {
       source = graphs[i].links[graphs[i].links.length - 1].source.id;

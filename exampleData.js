@@ -7,8 +7,5 @@ export const exampleGraph = {
   6: { 7: 2 },
   7: { 8: 1, 9: 6 },
   8: { 9: 7},
-  9: {}
+  9: {},
 };
-
-export const startPoint = '1';
-export const endPoint = '7';

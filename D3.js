@@ -1,8 +1,4 @@
-import {
-  firstExampleGraph,
-  getUserGraph,
-  correctPathLength,
-} from './Djikstra.js';
+import { getGraphData } from './Djikstra.js';
 import { sleep } from './utilityService.js';
 import { correctSteps, allSteps, showSteps, showStepsManual } from './steps.js';
 
@@ -11,16 +7,6 @@ var secondNode = document.getElementById('secondNode');
 var linkValue = document.getElementById('linkValue');
 var startPoint = document.getElementById('startPoint');
 var endPoint = document.getElementById('endPoint');
-
-document
-  .querySelector('form.points-form')
-  .addEventListener('submit', function (e) {
-    e.preventDefault();
-    localStorage.removeItem('startPoint');
-    localStorage.setItem('startPoint', startPoint.value);
-    localStorage.removeItem('endPoint');
-    localStorage.setItem('endPoint', endPoint.value);
-  });
 
 const listOfUserValues = [];
 const newUserGraph = {};
@@ -54,27 +40,31 @@ document.getElementById('draw').addEventListener('click', function (e) {
       ] = parseInt(listOfUserValues[i].linksValue);
     }
   }
-
-  let startPoint,
-    endPoint = '';
-  if (localStorage.getItem('startPoint'))
-    startPoint = localStorage.getItem('startPoint');
-
-  if (localStorage.getItem('endPoint'))
-    endPoint = localStorage.getItem('endPoint');
-
-  const { firstExampleGraph, correctPathLength } = getUserGraph(
-    newUserGraph,
-    startPoint,
-    endPoint
-  );
-  localStorage.setItem('correctPathLength', correctPathLength);
-  localStorage.setItem('userGraph', JSON.stringify(firstExampleGraph));
+  data = getGraphData(newUserGraph);
+  graphs = data.firstExampleGraph;
   updateData(0);
 });
 
 let graphs = {};
-graphs = firstExampleGraph;
+let data = getGraphData();
+graphs = data.firstExampleGraph;
+let correctPathLength = data.correctPathLength;
+correctSteps(graphs, correctPathLength);
+
+document
+  .querySelector('form.points-form')
+  .addEventListener('submit', function (e) {
+    e.preventDefault();
+    localStorage.removeItem('startPoint');
+    localStorage.setItem('startPoint', startPoint.value);
+    localStorage.removeItem('endPoint');
+    localStorage.setItem('endPoint', endPoint.value);
+    data = getGraphData();
+    graphs = data.firstExampleGraph;
+    correctPathLength = data.correctPathLength;
+    correctSteps(graphs, correctPathLength);
+    updateData(0);
+  });
 
 const increaser = document.querySelector('#increaser');
 const decreaser = document.querySelector('#decreaser');
@@ -129,7 +119,7 @@ steps();
 allSteps(graphs);
 correctSteps(graphs, correctPathLength);
 
-var width = 550;
+var width = 600;
 var height = 400;
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -231,14 +221,6 @@ function updateData(i) {
     .attr('r', 10)
     .attr('fill', function (d) {
       return color(d.group);
-    })
-    .attr('stroke', function (d) {
-      if (d) {
-        return 'white';
-      }
-    })
-    .attr('stroke-width', function (d) {
-      if (d.active) return 4;
     });
 
   node.on('mouseover', focus).on('mouseout', unfocus);

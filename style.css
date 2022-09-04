@@ -12,9 +12,10 @@
 
 .container-form {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 50px;
+  gap: 30px;
   margin-top: 25px;
 }
 .button {
@@ -80,19 +81,22 @@ input {
 }
 
 .steps-container {
-  color: green !important;
+  color: green;
+  height: 100%;
+  min-width: 300px;
 }
 
 .container-points {
   margin-top: -20px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 20px;
 }
 
 .color-one {
-  background-color: #ebf1e9;
+  background-color: #eef5ec;
 }
 
 .color-two {
@@ -128,9 +132,9 @@ td,
 th {
   border: 1px solid #b5b5b5;
   text-align: center;
-  padding: 8px;
+  padding: 4px;
 }
 
 tr:nth-child(even) {
-  background-color: #efefef;
+  background-color: #eef5ec;
 }

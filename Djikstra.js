@@ -1,4 +1,4 @@
-import { exampleGraph, startPoint, endPoint } from './exampleData.js';
+import { exampleGraph } from './exampleData.js';
 
 const shortestDistanceNode = (distances, visited) => {
   let shortest = null;
@@ -108,7 +108,6 @@ export const findShortestPath = (graph, startNode, endNode) => {
 let graph = exampleGraph;
 
 // construct data so it matches needs of a d3 forced graph
-
 export function constructData(graph) {
   const nodesKeys = Object.keys(graph);
   const nodes = [];
@@ -176,13 +175,27 @@ export function createGraphsFromResult(result, graph) {
   return shortestPathGraphs;
 }
 
-export function getUserGraph(graph, startPoint, endPoint) {
+export function getGraphData(addToGraph) {
+  if (addToGraph) {
+    graph = {
+      ...graph,
+      ...addToGraph,
+    };
+  }
+
+  let startPoint = '1';
+  if (localStorage.getItem('startPoint'))
+    startPoint = localStorage.getItem('startPoint');
+
+  let endPoint = '7';
+  if (localStorage.getItem('endPoint'))
+    endPoint = localStorage.getItem('endPoint');
+
   const { results, pathFindingLinks } = findShortestPath(
     graph,
     startPoint,
     endPoint
   );
-
   const { nodes, links } = constructData(graph);
   const pathFindingLinksArray = [];
 
@@ -192,6 +205,7 @@ export function getUserGraph(graph, startPoint, endPoint) {
       links: [...links, pathFindingLinks[i]],
     });
   }
+
   const createdGraphArray = createGraphsFromResult(results, graph);
   const correctPathLength = createdGraphArray.length;
 
@@ -200,49 +214,22 @@ export function getUserGraph(graph, startPoint, endPoint) {
   const firsExampleGraph = {
     ...createdGraphArray,
   };
+  const activeNodes = [];
 
-  return { correctPathLength, firsExampleGraph };
-}
-
-const { results, pathFindingLinks } = findShortestPath(
-  graph,
-  startPoint,
-  endPoint
-);
-
-const { nodes, links } = constructData(graph);
-const pathFindingLinksArray = [];
-
-for (let i = 0; i < pathFindingLinks.length; i++) {
-  pathFindingLinksArray.push({
-    nodes,
-    links: [...links, pathFindingLinks[i]],
-  });
-}
-
-const createdGraphArray = createGraphsFromResult(results, graph);
-export const correctPathLength = createdGraphArray.length;
-
-createdGraphArray.unshift(...pathFindingLinksArray);
-
-const firsExampleGraph = {
-  ...createdGraphArray,
-};
-
-const activeNodes = [];
-
-for (var item in firsExampleGraph) {
-  for (let i = 0; i < firsExampleGraph[item].links.length; i++) {
-    const link = firsExampleGraph[item].links[i];
-    if (link.color === 'green' || link.color === 'red') {
-      for (let i = 0; i < firsExampleGraph[item].nodes.length; i++) {
-        if (firsExampleGraph[item].nodes[i].id == link.source) {
-          activeNodes.push({ id: link.source });
+  for (var item in firsExampleGraph) {
+    for (let i = 0; i < firsExampleGraph[item].links.length; i++) {
+      const link = firsExampleGraph[item].links[i];
+      if (link.color === 'green' || link.color === 'red') {
+        for (let i = 0; i < firsExampleGraph[item].nodes.length; i++) {
+          if (firsExampleGraph[item].nodes[i].id == link.source) {
+            activeNodes.push({ id: link.source });
+          }
         }
       }
     }
   }
-}
 
-export const active = activeNodes;
-export const firstExampleGraph = firsExampleGraph;
+  const firstExampleGraph = firsExampleGraph;
+
+  return { correctPathLength, firstExampleGraph };
+}
