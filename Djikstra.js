@@ -183,11 +183,11 @@ export function getGraphData(addToGraph) {
     };
   }
 
-  let startPoint = '1';
+  let startPoint = '1'; // default value for example graph
   if (localStorage.getItem('startPoint'))
     startPoint = localStorage.getItem('startPoint');
 
-  let endPoint = '7';
+  let endPoint = '7'; // default value for example graph
   if (localStorage.getItem('endPoint'))
     endPoint = localStorage.getItem('endPoint');
 
@@ -196,6 +196,7 @@ export function getGraphData(addToGraph) {
     startPoint,
     endPoint
   );
+  const weightOfFinalPath = results.distance;
   const { nodes, links } = constructData(graph);
   const pathFindingLinksArray = [];
 
@@ -231,5 +232,5 @@ export function getGraphData(addToGraph) {
 
   const firstExampleGraph = firsExampleGraph;
 
-  return { correctPathLength, firstExampleGraph };
+  return { correctPathLength, firstExampleGraph, weightOfFinalPath };
 }

@@ -42,27 +42,29 @@ document.getElementById('draw').addEventListener('click', function (e) {
   }
   data = getGraphData(newUserGraph);
   graphs = data.firstExampleGraph;
+  allSteps(graphs);
   updateData(0);
 });
 
-let graphs = {};
 let data = getGraphData();
-graphs = data.firstExampleGraph;
-let correctPathLength = data.correctPathLength;
-correctSteps(graphs, correctPathLength);
+let graphs = data.firstExampleGraph;
+let { weightOfFinalPath, correctPathLength } = data;
+correctSteps(graphs, correctPathLength, weightOfFinalPath);
 
 document
   .querySelector('form.points-form')
   .addEventListener('submit', function (e) {
     e.preventDefault();
+    const stepsValue = document.getElementById('stepsValue');
+    stepsValue.textContent = '';
     localStorage.removeItem('startPoint');
     localStorage.setItem('startPoint', startPoint.value);
     localStorage.removeItem('endPoint');
     localStorage.setItem('endPoint', endPoint.value);
     data = getGraphData();
     graphs = data.firstExampleGraph;
-    correctPathLength = data.correctPathLength;
-    correctSteps(graphs, correctPathLength);
+    let { weightOfFinalPath, correctPathLength } = data;
+    correctSteps(graphs, correctPathLength, weightOfFinalPath);
     updateData(0);
   });
 
@@ -74,13 +76,8 @@ const res = document.querySelector('#result');
 if (parseInt(res.textContent) === 1) decreaser.disabled = true;
 
 async function steps() {
-  const userGraph = JSON.parse(localStorage.getItem('userGraph'));
-  if (userGraph) {
-    graphs = userGraph;
-  }
-
   auto.addEventListener('click', async () => {
-    const stepDuration = 1000;
+    const stepDuration = 600;
     showSteps(stepDuration, graphs, correctPathLength);
     for (let i = 0; i < Object.keys(graphs).length; i++) {
       updateData(i);
@@ -117,7 +114,7 @@ async function steps() {
 
 steps();
 allSteps(graphs);
-correctSteps(graphs, correctPathLength);
+correctSteps(graphs, correctPathLength, weightOfFinalPath);
 
 var width = 600;
 var height = 400;
@@ -133,13 +130,8 @@ updateData(0);
 
 function updateData(i) {
   d3.selectAll('svg > *').remove();
-  let graph = {};
-  const userGraph = JSON.parse(localStorage.getItem('userGraph'));
-  if (userGraph) {
-    graph = userGraph[i];
-  } else {
-    graph = graphs[i];
-  }
+
+  let graph = graphs[i];
 
   graph.nodes.forEach(function (d, i) {
     label.nodes.push({ node: d });

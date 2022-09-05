@@ -48,35 +48,42 @@
         <button id="increaser" class="button">NEXT STEP</button>
       </div>
     </div>
-
-    <div>
-      <div class="container">
-        <div>
-          <p class="text">
-            All links with their starting point, target point and weight of a
-            link:
-          </p>
-          <div id="links" class="links">
-            <table id="value"></table>
-          </div>
-        </div>
-        <div>
-          <div style="margin: 30px">
-            <p class="text">
-              Shortest path calculated with Djikstras algorithm:
-            </p>
-            <div id="links" class="links shortestPathLinks">
-              <p id="finalValue"></p>
+    <div style="margin: 50px">
+      <p class="text">Shortest path calculated with Djikstras algorithm:</p>
+      <div id="links" class="links shortestPathLinks">
+        <p id="finalValue"></p>
+      </div>
+      <div>
+        <div class="container">
+          <div class="container container-table">
+            <div>
+              <p class="text">
+                All links with their starting point, target point and weight of
+                a link:
+              </p>
+              <div id="links" class="links">
+                <table id="value"></table>
+              </div>
             </div>
           </div>
           <div class="text">
+            <div class="info">
+              <img
+                src="info.png"
+                alt="more informations"
+                style="width: 30px; height: 30px; opacity: 0.5"
+              />
+              <span class="tooltiptext">
+                  Start, end and targeted node can only be nodes that already exist!
+               </span>
+            </div>
             <p style="margin: 30px">
-              Between which two point do you want to find shortest path?
+              Between which two nodes do you want to find shortest path?
             </p>
             <form class="points-form">
               <div class="container container-points-main">
                 <div class="container-points">
-                  <p>starting point:</p>
+                  <p>start node:</p>
                   <input
                     id="startPoint"
                     type="text"
@@ -85,7 +92,7 @@
                   />
                 </div>
                 <div class="container-points">
-                  <p>end point:</p>
+                  <p>end node:</p>
                   <input
                     id="endPoint"
                     type="text"
@@ -99,54 +106,52 @@
                 <button class="button color-one">submit points</button>
               </div>
             </form>
-           
+
             <div style="display: block">
               <form class="pure-form">
                 <div class="container-form">
-                    <div>
-                      <p>Name of source node:</p>
-                      <input
-                        id="firstNode"
-                        type="text"
-                        required
-                        placeholder="Enter node name"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <p>Name of targeted node:</p>
-                      <input
-                        id="secondNode"
-                        required
-                        type="text"
-                        placeholder="Enter second node name"
-                      />
-                    </div>
-                    <div>
-                      <p>Weight of link between nodes:</p>
-                      <input
-                        id="linkValue"
-                        min="1"
-                        max="50"
-                        required
-                        type="number"
-                        placeholder="Enter weight of link"
-                      />
-                    </div>
+                  <div>
+                    <p>Name of source node:</p>
+                    <input
+                      id="firstNode"
+                      type="text"
+                      required
+                      placeholder="Enter node name"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <p>Name of targeted node:</p>
+                    <input
+                      id="secondNode"
+                      required
+                      type="text"
+                      placeholder="Enter second node name"
+                    />
+                  </div>
+                  <div>
+                    <p>Weight of link between nodes:</p>
+                    <input
+                      id="linkValue"
+                      min="1"
+                      max="50"
+                      required
+                      type="number"
+                      placeholder="Enter weight of link"
+                    />
+                  </div>
                   <button class="button color-two">submit new link</button>
                 </div>
               </form>
               <div class="container" style="margin-top: 30px">
-                <button id="draw" class="button color-one">redraw graph with new links</button>
+                <button id="draw" class="button color-one">
+                  redraw graph with new links
+                </button>
               </div>
             </div>
           </div>
-          
         </div>
       </div>
-    </div>
-    <div class="container">
-      
     </div>
   </body>
 

@@ -1,15 +1,13 @@
 import { sleep } from './utilityService.js';
 
-export function correctSteps(graphs, correctPathLength) {
+// displays shortest path calculated by the algorithm
+export function correctSteps(graphs, correctPathLength, weightOfFinalPath) {
   const shownFinishedLinksData = [];
   const finalValue = document.getElementById('finalValue');
   let finalValueParagraph = '';
+  const weightOfFinalPathText = `<p class="text" style="margin: 25px">Weight of a shortest path: <span class="finalWeight">${weightOfFinalPath}</span>  </p>`;
 
-  if (
-    correctPathLength &&
-    Object.keys(graphs).length !== 16
-  ) {
-    const correctPathLength = localStorage.getItem('correctPathLength');
+  if (correctPathLength && Object.keys(graphs).length !== 16) {
     for (
       let i = Object.keys(graphs).length;
       i > Object.keys(graphs).length - correctPathLength;
@@ -31,6 +29,8 @@ export function correctSteps(graphs, correctPathLength) {
       finalValueParagraph += shownFinishedLinksData[i].data;
     }
 
+    finalValueParagraph += weightOfFinalPathText;
+
     finalValue.innerHTML = finalValueParagraph;
   } else {
     for (
@@ -43,7 +43,7 @@ export function correctSteps(graphs, correctPathLength) {
       <span class="tab"></span> target - ${
         graphs[i].links[graphs[0].links.length - 1].target
       } 
-      <span class="tab"></span> value - ${
+      <span class="tab"></span> weight - ${
         graphs[i].links[graphs[0].links.length - 1].value
       } `,
       });
@@ -51,17 +51,19 @@ export function correctSteps(graphs, correctPathLength) {
     for (let i = 0; i < shownFinishedLinksData.length; i++) {
       finalValueParagraph += shownFinishedLinksData[i].data;
     }
+    finalValueParagraph += weightOfFinalPathText;
   }
 
   finalValue.innerHTML = finalValueParagraph;
 }
 
+// displays table with all links and their source point, target point and weight of a link
 export function allSteps(graphs) {
   const value = document.getElementById('value');
   const shownLinksData = [];
   let valueParagraph = '';
 
-  for (let i = 0; i < graphs[0].links.length; i++) {
+  for (let i = 0; i < graphs[0].links.length - 1; i++) {
     shownLinksData.push({
       data: `
       <tr>
@@ -75,6 +77,7 @@ export function allSteps(graphs) {
   value.innerHTML = valueParagraph;
 }
 
+// displays steps one by one when clicked on buttons
 export async function showStepsManual(n, clear, graphs, correctPathLength) {
   const stepsValue = document.getElementById('stepsValue');
   stepsValue.textContent = '';
@@ -82,8 +85,7 @@ export async function showStepsManual(n, clear, graphs, correctPathLength) {
   let stepsData = [];
   let stepsParagraph = '';
 
-  for (let i = 0; i < graphs[n].links.length - correctPathLength - 1; i++) {
-    // # TODO fix for user added links
+  for (let i = 0; i < Object.keys(graphs).length - correctPathLength; i++) {
     let source, target;
     source = graphs[i].links[graphs[n].links.length - 1].source;
     target = graphs[i].links[graphs[n].links.length - 1].target;
@@ -96,34 +98,34 @@ export async function showStepsManual(n, clear, graphs, correctPathLength) {
     const firstSource = graphs[i].links[graphs[n].links.length - 1].source.id
       ? graphs[i].links[graphs[n].links.length - 1].source.id
       : graphs[i].links[graphs[n].links.length - 1].source;
-    const secondSource = graphs[i + 1].links[graphs[n].links.length - 1].source
-      .id
-      ? graphs[i + 1].links[graphs[n].links.length - 1].source.id
-      : graphs[i + 1].links[graphs[n].links.length - 1].source;
-    if (i !== 0 && i !== 11 && firstSource !== secondSource) {
-      text = `<p class="animated text" style="color: black; margin: 10px"> new node - ${secondSource} </p>`;
+    if (graphs[i + 1] !== undefined) {
+      const secondSource = graphs[i + 1].links[graphs[n].links.length - 1]
+        .source.id
+        ? graphs[i + 1].links[graphs[n].links.length - 1].source.id
+        : graphs[i + 1].links[graphs[n].links.length - 1].source;
+      if (i !== 0 && i !== 11 && firstSource !== secondSource) {
+        text = `<p class="animated text" style="color: black; margin: 10px"> new node - ${secondSource} </p>`;
+      }
     }
 
     stepsData.push({
       data: `<p class="animated"> source -  ${source}
   <span class="tab"></span> target - ${target} 
-  <span class="tab"></span> value - ${
+  <span class="tab"></span> weight - ${
     graphs[i].links[graphs[n].links.length - 1].value
   } </p> ${text}`,
     });
   }
 
+  if (Object.keys(graphs).length - correctPathLength < n)
+    n = Object.keys(graphs).length - correctPathLength - 1;
   for (let i = 0; i < n; i++) {
-    if (clear) {
-      stepsParagraph += stepsData[i].data;
-    } else {
-      stepsParagraph += stepsData[i + 1].data;
-    }
-
+    stepsParagraph += stepsData[i + 1].data;
     stepsValue.innerHTML = stepsParagraph;
   }
 }
 
+// displays steps automatically when clicked on "autorun" button
 export async function showSteps(a, graphs, correctPathLength) {
   const stepsValue = document.getElementById('stepsValue');
   stepsValue.textContent = '';
@@ -131,7 +133,7 @@ export async function showSteps(a, graphs, correctPathLength) {
   let stepsData = [];
   let stepsParagraph = '';
 
-  for (let i = 0; i < graphs[i].links.length - correctPathLength; i++) {
+  for (let i = 0; i < graphs[i].links.length - correctPathLength + 1; i++) {
     let source, target;
     if (graphs[i].links[graphs[i].links.length - 1].source.id) {
       source = graphs[i].links[graphs[i].links.length - 1].source.id;
@@ -158,7 +160,7 @@ export async function showSteps(a, graphs, correctPathLength) {
     stepsData.push({
       data: `<p class="animated"> source -  ${source}
   <span class="tab"></span> target - ${target} 
-  <span class="tab"></span> value - ${
+  <span class="tab"></span> weight - ${
     graphs[i].links[graphs[i].links.length - 1].value
   } </p> ${text}`,
     });

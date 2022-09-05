@@ -1,6 +1,6 @@
 * {
   font-family: 'Poppins', sans-serif;
-  font-size: 14px;
+  font-size: small;
 }
 .container {
   display: flex;
@@ -28,7 +28,7 @@
   cursor: pointer;
   display: inline-flex;
   flex-shrink: 0;
-  font-size: 12px;
+
   gap: 8px;
   justify-content: center;
   line-height: 1.5;
@@ -53,7 +53,7 @@
 
 #value,
 #finalValue {
-  width: 340px;
+  width: 300px;
 }
 #draw {
   margin-bottom: 100px;
@@ -77,13 +77,13 @@
 input {
   padding: 10px;
   min-width: 200px;
-  height: 40px;
+  min-height: 40px;
 }
 
 .steps-container {
   color: green;
   height: 100%;
-  min-width: 300px;
+  min-width: 350px;
 }
 
 .container-points {
@@ -137,4 +137,55 @@ th {
 
 tr:nth-child(even) {
   background-color: #eef5ec;
+}
+.finalWeight {
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 1.25px;
+}
+
+.info {
+  position: absolute;
+  right: 12vw;
+}
+
+.tooltiptext {
+  margin: 10px;
+  visibility: hidden;
+  width: 120px;
+  background-color: #f2eaf2;
+  color: black;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px 10px;
+  border: 1px solid rgb(154, 153, 153);
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.info:hover .tooltiptext {
+  visibility: visible;
+}
+
+@media all and (max-width: 1000px) {
+  body {
+    margin: 5vh 0vw;
+  }
+  * {
+    font-size: x-large;
+  }
+  .container {
+    flex-wrap: wrap;
+  }
+  .info {
+    right: 17vw;
+  }
+  #finalValue {
+    width: 550px;
+  }
+  .tooltiptext {
+    margin: 35px -10px;
+  }
 }
