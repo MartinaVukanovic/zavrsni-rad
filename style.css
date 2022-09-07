@@ -42,6 +42,7 @@
   text-overflow: ellipsis;
   transition: all 0.14s ease-out;
   white-space: nowrap;
+  font-weight: 500;
 }
 
 .button:hover {
@@ -111,6 +112,10 @@ input {
   gap: 20px;
 }
 
+.container-new-link {
+  width: 240px;
+}
+
 .color-one {
   background-color: #eef5ec;
 }
@@ -120,14 +125,7 @@ input {
 }
 
 .color-three {
-  letter-spacing: 0.7px;
-  color: rgb(205, 5, 5) !important;
-  border: 1px solid rgb(118, 16, 16);
-  background-color: #f8d8d8;
-}
-
-.color-three:hover {
-  box-shadow: 4px 4px 0 rgb(154, 11, 11);
+  background-color: #ffe4e4;
 }
 
 .hr {
@@ -166,6 +164,7 @@ th {
 tr:nth-child(even) {
   background-color: #eef5ec;
 }
+
 .finalWeight {
   font-weight: 600;
   letter-spacing: 1.25px;
@@ -213,14 +212,18 @@ tr:nth-child(even) {
   }
 
   .container-form {
-    justify-content: space-between;
-    gap: 40px;
-    margin: 80px 10px;
+    justify-content: center;
+    gap: 20px;
+    margin: 80px 4vw 25px 4vw;
   }
-
+  .container-new-link {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
   input {
-    min-width: 355px;
-    min-height: 55px;
+    width: 355px !important;
+    height: 55px;
   }
 
   .info {
@@ -248,5 +251,9 @@ tr:nth-child(even) {
 
   table {
     font-size: 24px;
+  }
+
+  .delete-form {
+    margin: 80px;
   }
 }
