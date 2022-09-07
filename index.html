@@ -1,4 +1,5 @@
 <html>
+  <title>Visualization of Dijkstra's algorithm</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -48,11 +49,43 @@
         <button id="increaser" class="button">NEXT STEP</button>
       </div>
     </div>
-    <div style="margin: 50px">
-      <p class="text">Shortest path calculated with Djikstras algorithm:</p>
-      <div id="links" class="links shortestPathLinks">
-        <p id="finalValue"></p>
+    <div class="container" style="margin-top: 50px">
+      <div class="container-steps-main">
+        <div>
+          <p class="text">General steps of Dijkstra's algorithm</p>
+        </div>
+        <div class="container-steps-text">
+          <p>
+            <span class="finalWeight">1. </span>
+            Choose start node and store child nodes and distances to child nodes
+          </p>
+          <p>
+            <span class="finalWeight">2.</span>
+            Find nearest node based on stored distances
+          </p>
+          <p>
+            <span class="finalWeight">3.</span>
+            For every child node of node picked in previous step find shortest
+            path to start node, continue with node that has shortest path
+          </p>
+          <p class="text">
+            <span class="finalWeight">*</span>
+            Repeat steps 2 and 3 untill all nodes are visited
+          </p>
+        </div>
       </div>
+      <div>
+        <div>
+          <p class="text title">
+            Shortest path calculated with Djikstra's algorithm:
+          </p>
+        </div>
+        <div id="links" class="links shortestPathLinks">
+          <p id="finalValue"></p>
+        </div>
+      </div>
+    </div>
+    <div style="margin: 50px">
       <div>
         <div class="container">
           <div class="container container-table">
@@ -74,8 +107,9 @@
                 style="width: 30px; height: 30px; opacity: 0.5"
               />
               <span class="tooltiptext">
-                  Start, end and targeted node can only be nodes that already exist!
-               </span>
+                Start, end and targeted node can only be nodes that already
+                exist!
+              </span>
             </div>
             <p style="margin: 30px">
               Between which two nodes do you want to find shortest path?
@@ -106,7 +140,6 @@
                 <button class="button color-one">submit points</button>
               </div>
             </form>
-
             <div style="display: block">
               <form class="pure-form">
                 <div class="container-form">
@@ -143,10 +176,30 @@
                   <button class="button color-two">submit new link</button>
                 </div>
               </form>
-              <div class="container" style="margin-top: 30px">
+              <div class="container">
                 <button id="draw" class="button color-one">
                   redraw graph with new links
                 </button>
+              </div>
+              <div>
+                <form class="delete-form">
+                  <div>
+                    <p>Name of node you want to delete</p>
+                    <input
+                      id="nodeName"
+                      required
+                      type="text"
+                      placeholder="example: 9"
+                    />
+                    <button
+                      class="button color-three"
+                      style="margin-left: 30px"
+                    >
+                      delete
+                    </button>
+                    <p id="error" style="color: red"></p>
+                  </div>
+                </form>
               </div>
             </div>
           </div>

@@ -2,7 +2,6 @@ import { exampleGraph } from './exampleData.js';
 
 const shortestDistanceNode = (distances, visited) => {
   let shortest = null;
-
   for (let node in distances) {
     let currentIsShortest =
       shortest === null || distances[node] < distances[shortest];
@@ -10,6 +9,7 @@ const shortestDistanceNode = (distances, visited) => {
       shortest = node;
     }
   }
+
   return shortest;
 };
 
@@ -55,6 +55,8 @@ export const findShortestPath = (graph, startNode, endNode) => {
 
         // console.log(distance, children[child]);
         const childLinkValue = children[child];
+
+        // needed for better visualization
         pathFindingLinks.push({
           source: node,
           target: child,
@@ -73,7 +75,6 @@ export const findShortestPath = (graph, startNode, endNode) => {
         if (!distances[child] || distances[child] > newdistance) {
           distances[child] = newdistance;
           parents[child] = node;
-          // console.log('distance + parents updated');
         } else {
           // console.log('not updating, because a shorter path already exists!');
         }
@@ -81,6 +82,7 @@ export const findShortestPath = (graph, startNode, endNode) => {
     }
     // move the node to the visited set
     visited.push(node);
+
     // move to the nearest neighbor node
     node = shortestDistanceNode(distances, visited);
   }
@@ -175,12 +177,18 @@ export function createGraphsFromResult(result, graph) {
   return shortestPathGraphs;
 }
 
-export function getGraphData(addToGraph) {
+export function getGraphData(addToGraph, deleteNode) {
   if (addToGraph) {
     graph = {
       ...graph,
       ...addToGraph,
     };
+  }
+  if (deleteNode) {
+    graph[deleteNode] = {};
+    for (var graphLink in graph) {
+      graph[graphLink][deleteNode] = 0;
+    }
   }
 
   let startPoint = '1'; // default value for example graph

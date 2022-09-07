@@ -6,23 +6,24 @@ export function correctSteps(graphs, correctPathLength, weightOfFinalPath) {
   const finalValue = document.getElementById('finalValue');
   let finalValueParagraph = '';
   const weightOfFinalPathText = `<p class="text" style="margin: 25px">Weight of a shortest path: <span class="finalWeight">${weightOfFinalPath}</span>  </p>`;
-
   if (correctPathLength && Object.keys(graphs).length !== 16) {
     for (
       let i = Object.keys(graphs).length;
       i > Object.keys(graphs).length - correctPathLength;
       i--
     ) {
+      const source = graphs[i - 1].links[graphs[0].links.length - 1].source.id
+        ? graphs[i - 1].links[graphs[0].links.length - 1].source.id
+        : graphs[i - 1].links[graphs[0].links.length - 1].source;
+      const target = graphs[i - 1].links[graphs[0].links.length - 1].target.id
+        ? graphs[i - 1].links[graphs[0].links.length - 1].target.id
+        : graphs[i - 1].links[graphs[0].links.length - 1].target;
       shownFinishedLinksData.push({
-        data: ` source -  ${
-          graphs[i - 1].links[graphs[0].links.length - 1].source
-        }
-        <span class="tab"></span> target - ${
-          graphs[i - 1].links[graphs[0].links.length - 1].target
-        } 
-        <span class="tab"></span> value - ${
+        data: `<p style="margin: 0px; padding: 0px" class="container"> source -  ${source}
+        <span class="tab"></span> target - ${target} 
+        <span class="tab"></span> weight - ${
           graphs[i - 1].links[graphs[0].links.length - 1].value
-        } `,
+        } </p>`,
       });
     }
     for (let i = 0; i < shownFinishedLinksData.length; i++) {
@@ -38,14 +39,18 @@ export function correctSteps(graphs, correctPathLength, weightOfFinalPath) {
       i > graphs[0].links.length - correctPathLength;
       i--
     ) {
+      const source = graphs[i].links[graphs[0].links.length - 1].source.id
+        ? graphs[i].links[graphs[0].links.length - 1].source.id
+        : graphs[i].links[graphs[0].links.length - 1].source;
+      const target = graphs[i - 1].links[graphs[0].links.length - 1].target.id
+        ? graphs[i].links[graphs[0].links.length - 1].target.id
+        : graphs[i].links[graphs[0].links.length - 1].target;
       shownFinishedLinksData.push({
-        data: ` source -  ${graphs[i].links[graphs[0].links.length - 1].source}
-      <span class="tab"></span> target - ${
-        graphs[i].links[graphs[0].links.length - 1].target
-      } 
+        data: `<p style="margin: 0px; padding: 0px; gap: 20px" class="container"> source -  ${source}
+      <span class="tab"></span> target - ${target} 
       <span class="tab"></span> weight - ${
         graphs[i].links[graphs[0].links.length - 1].value
-      } `,
+      } </p>`,
       });
     }
     for (let i = 0; i < shownFinishedLinksData.length; i++) {
@@ -64,11 +69,17 @@ export function allSteps(graphs) {
   let valueParagraph = '';
 
   for (let i = 0; i < graphs[0].links.length - 1; i++) {
+    const source = graphs[0].links[i].source.id
+      ? graphs[0].links[i].source.id
+      : graphs[0].links[i].source;
+    const target = graphs[0].links[i].target.id
+      ? graphs[0].links[i].target.id
+      : graphs[0].links[i].target;
     shownLinksData.push({
       data: `
       <tr>
-      <td>${graphs[0].links[i].source} </td>
-      <td>${graphs[0].links[i].target}</td>
+      <td>${source} </td>
+      <td>${target}</td>
       <td>${graphs[0].links[i].value}</td></tr>`,
     });
     valueParagraph += shownLinksData[i].data;

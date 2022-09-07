@@ -1,6 +1,5 @@
 * {
   font-family: 'Poppins', sans-serif;
-  font-size: small;
 }
 .container {
   display: flex;
@@ -15,8 +14,11 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 30px;
-  margin-top: 25px;
+  gap: 25px;
+  margin: 20px;
+}
+.container-table {
+  max-width: 55vw;
 }
 .button {
   outline: 0;
@@ -28,7 +30,7 @@
   cursor: pointer;
   display: inline-flex;
   flex-shrink: 0;
-
+  color: black !important;
   gap: 8px;
   justify-content: center;
   line-height: 1.5;
@@ -51,12 +53,8 @@
   align-items: center;
 }
 
-#value,
-#finalValue {
-  width: 300px;
-}
 #draw {
-  margin-bottom: 100px;
+  margin: 20px 0px;
 }
 
 .tab {
@@ -75,15 +73,30 @@
 }
 
 input {
-  padding: 10px;
+  padding: 10px 15px;
   min-width: 200px;
-  min-height: 40px;
+  min-height: 35px;
+  border: 1px solid rgba(0, 0, 0, 0.65);
+  border-radius: 5px;
 }
 
 .steps-container {
   color: green;
   height: 100%;
   min-width: 350px;
+}
+
+.step-number {
+  font-weight: 600;
+}
+
+.container-steps-main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.container-steps-text {
+  width: 35vw;
 }
 
 .container-points {
@@ -101,6 +114,16 @@ input {
 
 .color-two {
   background-color: #f2eaf2;
+}
+
+.color-three {
+  letter-spacing: 0.7px;
+  color: rgb(205, 5, 5) !important;
+  border: 1px solid rgb(118, 16, 16);
+  background-color: #f8d8d8;
+}
+.color-three:hover {
+  box-shadow: 4px 4px 0 rgb(154, 11, 11);
 }
 
 .hr {
@@ -140,7 +163,6 @@ tr:nth-child(even) {
 }
 .finalWeight {
   font-weight: 600;
-  font-size: 20px;
   letter-spacing: 1.25px;
 }
 
@@ -159,8 +181,6 @@ tr:nth-child(even) {
   border-radius: 6px;
   padding: 10px 10px;
   border: 1px solid rgb(154, 153, 153);
-
-  /* Position the tooltip */
   position: absolute;
   z-index: 1;
 }
@@ -169,23 +189,43 @@ tr:nth-child(even) {
   visibility: visible;
 }
 
-@media all and (max-width: 1000px) {
+@media all and (max-width: 1024px) {
   body {
     margin: 5vh 0vw;
+    font-size: 24px !important;
   }
-  * {
-    font-size: x-large;
+  button {
+    font-size: 22px;
+  }
+  .title {
+    font-size: 26px;
   }
   .container {
     flex-wrap: wrap;
   }
-  .info {
-    right: 17vw;
+  .container-form {
+    justify-content: space-between;
+    gap: 40px;
+    margin: 80px 2vw;
   }
-  #finalValue {
-    width: 550px;
+  input {
+    min-width: 355px;
+    min-height: 55px;
+  }
+  .info {
+    margin-top: -30px;
+    right: 10vw;
+  }
+  .info img {
+    height: 50px !important;
+    width: 50px !important;
   }
   .tooltiptext {
-    margin: 35px -10px;
+    width: 240px;
+    margin: 60px -20vw;
+  }
+  .container-steps-text {
+    font-size: 16px !important;
+    width: 55vw;
   }
 }

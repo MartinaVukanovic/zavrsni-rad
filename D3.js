@@ -11,6 +11,7 @@ var endPoint = document.getElementById('endPoint');
 const listOfUserValues = [];
 const newUserGraph = {};
 
+// collect data from user
 document
   .querySelector('form.pure-form')
   .addEventListener('submit', function (e) {
@@ -26,7 +27,7 @@ document
     });
   });
 
-// collect data from user and draw a new graph with that data
+// draw a new graph with collected data
 document.getElementById('draw').addEventListener('click', function (e) {
   for (let i = 0; i < listOfUserValues.length; i++) {
     if (newUserGraph[listOfUserValues[i].firstNodeValue] == undefined) {
@@ -46,11 +47,7 @@ document.getElementById('draw').addEventListener('click', function (e) {
   updateData(0);
 });
 
-let data = getGraphData();
-let graphs = data.firstExampleGraph;
-let { weightOfFinalPath, correctPathLength } = data;
-correctSteps(graphs, correctPathLength, weightOfFinalPath);
-
+// collect user data for start and end node and draw graph with that data
 document
   .querySelector('form.points-form')
   .addEventListener('submit', function (e) {
@@ -68,6 +65,48 @@ document
     updateData(0);
   });
 
+// delete node on user request
+var nodeName = document.getElementById('nodeName');
+document
+  .querySelector('form.delete-form')
+  .addEventListener('submit', function (e) {
+    const error = document.getElementById('error');
+    e.preventDefault();
+    if (
+      nodeName.value ===
+      graphs[Object.keys(graphs).length - 1].links[
+        graphs[Object.keys(graphs).length - 1].links.length - 1
+      ].target
+    ) {
+      error.innerHTML = 'End point can not be deleted!';
+    } else if (nodeName.value === localStorage.getItem('startPoint')) {
+      error.innerHTML = 'Start point can not be deleted!';
+    } else if (nodeName.value === '1') {
+      // example start point
+      error.innerHTML = 'Start point can not be deleted!';
+    } else {
+      error.textContent = '';
+
+      const removeNode = nodeName.value;
+      data = getGraphData(false, removeNode);
+
+      let { weightOfFinalPath, correctPathLength } = data;
+
+      graphs = data.firstExampleGraph;
+
+      updateData(0);
+
+      correctSteps(graphs, correctPathLength, weightOfFinalPath);
+      allSteps(graphs);
+    }
+  });
+
+// get example graph data
+let data = getGraphData();
+let graphs = data.firstExampleGraph;
+let { weightOfFinalPath, correctPathLength } = data;
+correctSteps(graphs, correctPathLength, weightOfFinalPath);
+
 const increaser = document.querySelector('#increaser');
 const decreaser = document.querySelector('#decreaser');
 const auto = document.querySelector('#auto');
@@ -75,6 +114,7 @@ const res = document.querySelector('#result');
 
 if (parseInt(res.textContent) === 1) decreaser.disabled = true;
 
+// enables showing steps one by one on click of button
 async function steps() {
   auto.addEventListener('click', async () => {
     const stepDuration = 600;
@@ -116,6 +156,7 @@ steps();
 allSteps(graphs);
 correctSteps(graphs, correctPathLength, weightOfFinalPath);
 
+// base setup of svg where graph will be placed
 var width = 600;
 var height = 400;
 var color = d3.scaleOrdinal(d3.schemeCategory10);
