@@ -215,7 +215,7 @@ tr:nth-child(even) {
   .container-form {
     justify-content: space-between;
     gap: 40px;
-    margin: 80px 2vw;
+    margin: 80px 10px;
   }
 
   input {
